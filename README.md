@@ -15,3 +15,5 @@
 ## step5
 * 이벤트 Repository
 
+## step6
+* 입력값 제한하기
