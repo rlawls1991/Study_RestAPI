@@ -2,6 +2,10 @@ package study.evnets;
 
 import lombok.*;
 
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
 import java.time.LocalDateTime;
 
 @Builder
@@ -12,6 +16,7 @@ import java.time.LocalDateTime;
 @EqualsAndHashCode(of ="id")
 public class Event {
 
+    @Id @GeneratedValue
     private int id;
     private String name;
     private String description;
@@ -25,6 +30,7 @@ public class Event {
     private int limitOfEnrollment;
     private boolean offline;
     private boolean free;
-    private EventStatus eventStatus;
 
+    @Enumerated(EnumType.STRING)
+    private EventStatus eventStatus;
 }
