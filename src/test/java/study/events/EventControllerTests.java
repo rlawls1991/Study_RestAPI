@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.hateoas.MediaTypes;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
@@ -15,8 +16,7 @@ import java.time.LocalDateTime;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringRunner.class)
 @WebMvcTest
@@ -34,14 +34,16 @@ public class EventControllerTests {
                 .id(10)
                 .name("Spring")
                 .description("Rest API Development with Spring")
-                .beginEnrollmentDateTime(LocalDateTime.of(2021, 01,20, 18, 47 ))
-                .closeEnrollmentDateTime(LocalDateTime.of(2021, 01,21, 18, 47 ))
-                .beginEventDateTime(LocalDateTime.of(2021, 01,22, 18, 47 ))
-                .endEventDateTime(LocalDateTime.of(2021, 01,23, 18, 47 ))
+                .beginEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
+                .closeEnrollmentDateTime(LocalDateTime.of(2021, 01, 21, 18, 47))
+                .beginEventDateTime(LocalDateTime.of(2021, 01, 22, 18, 47))
+                .endEventDateTime(LocalDateTime.of(2021, 01, 23, 18, 47))
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(200)
                 .location("경기도 안양시 범계")
+                .free(true)
+                .offline(false)
                 .build();
 
         mockMvc.perform(post("/api/events")
@@ -50,7 +52,9 @@ public class EventControllerTests {
                     .content(objectMapper.writeValueAsString(event)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect( jsonPath("id").exists())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(header().exists(HttpHeaders.LOCATION))
+                .andExpect(header().string("Content-Type", "application/hal+json"))
         ;
     }
 
