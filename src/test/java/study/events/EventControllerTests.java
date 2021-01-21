@@ -17,6 +17,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import study.evnets.Event;
 import study.evnets.EventRepository;
+import study.evnets.EventStatus;
 
 import java.time.LocalDateTime;
 
@@ -64,6 +65,33 @@ public class EventControllerTests {
                 .andExpect(header().string("Content-Type", "application/hal+json"))
                 .andExpect(jsonPath("id").value(Matchers.not(100)))
                 .andExpect(jsonPath("free").value(Matchers.not(true)))
+        ;
+    }
+
+    @Test
+    public void createEvent_Bad_Request() throws Exception {
+        Event event = Event.builder()
+                .id(100)
+                .name("Spring")
+                .description("Rest API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
+                .closeEnrollmentDateTime(LocalDateTime.of(2021, 01, 21, 18, 47))
+                .beginEventDateTime(LocalDateTime.of(2021, 01, 22, 18, 47))
+                .endEventDateTime(LocalDateTime.of(2021, 01, 23, 18, 47))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(200)
+                .location("경기도 안양시 범계")
+                .free(true)
+                .offline(false)
+                .build();
+
+        mockMvc.perform(post("/api/events")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .accept(MediaTypes.HAL_JSON)
+                    .content(objectMapper.writeValueAsString(event)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
         ;
     }
 
