@@ -35,10 +35,12 @@ public class EventController {
     public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, Errors errors) {
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().build();
+            //return ResponseEntity.badRequest().body(errors); // 담을 수 없음
         }
         eventValidator.validate(eventDto, errors);
         if(errors.hasErrors()){
             return ResponseEntity.badRequest().build();
+            //return ResponseEntity.badRequest().body(errors); // 담을 수 없음
         }
 
         Event event = modelMapper.map(eventDto, Event.class);
@@ -46,4 +48,5 @@ public class EventController {
         URI createUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
         return ResponseEntity.created(createUri).body(event);
     }
+
 }
