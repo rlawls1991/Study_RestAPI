@@ -16,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import study.evnets.Event;
+import study.evnets.EventDto;
 import study.evnets.EventRepository;
 import study.evnets.EventStatus;
 
@@ -38,8 +39,7 @@ public class EventControllerTests {
 
     @Test
     public void createEvent() throws Exception {
-        Event event = Event.builder()
-                .id(100)
+        EventDto event = EventDto.builder()
                 .name("Spring")
                 .description("Rest API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
@@ -50,8 +50,6 @@ public class EventControllerTests {
                 .maxPrice(200)
                 .limitOfEnrollment(200)
                 .location("경기도 안양시 범계")
-                .free(true)
-                .offline(false)
                 .build();
 
         mockMvc.perform(post("/api/events")
