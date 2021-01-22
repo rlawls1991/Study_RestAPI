@@ -1,4 +1,4 @@
-package study.events;
+package study.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -13,8 +13,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import study.evnets.Event;
-import study.evnets.EventDto;
 
 import java.time.LocalDateTime;
 
@@ -57,9 +55,10 @@ public class EventControllerTests {
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
-                .andExpect(header().string("Content-Type", "application/hal+json"))
-                .andExpect(jsonPath("id").value(Matchers.not(100)))
-                .andExpect(jsonPath("free").value(Matchers.not(true)))
+                .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
+                .andExpect(jsonPath("free").value(false))
+                .andExpect(jsonPath("offline").value(true))
+                .andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT)))
         ;
     }
 
@@ -67,7 +66,6 @@ public class EventControllerTests {
     @DisplayName("입력 받을 수 없는 값을 사용한 경우에 에러가 발생한느 테스트")
     public void createEvent_Bad_Request() throws Exception {
         Event event = Event.builder()
-                .id(100)
                 .name("Spring")
                 .description("Rest API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
