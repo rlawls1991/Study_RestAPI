@@ -1,4 +1,4 @@
-# Rest API 개발
+# Rest API 개발 - Event 생성 API 구현
 
 ## step1
 * 프로젝트 생성
@@ -17,3 +17,8 @@
 
 ## step6
 * 입력값 제한하기
+
+## step7
+* 입력값 이외에 에러 발생
+* Bad Request 처리하기
+
