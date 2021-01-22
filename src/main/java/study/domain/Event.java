@@ -1,16 +1,21 @@
-package study.evnets;
+package study.domain;
 
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
-@Builder @AllArgsConstructor @NoArgsConstructor
-@Getter @Setter @EqualsAndHashCode(of ="id")
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+@EqualsAndHashCode(of = "id")
 @Entity
 public class Event {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     private int id;
     private String name;
     private String description;
@@ -26,4 +31,25 @@ public class Event {
     private boolean free;
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
+
+    public void update() {
+        updateFree();
+        updateOffline();
+    }
+
+    private void updateFree() {
+        if (this.basePrice == 0 && this.maxPrice == 0) {
+            this.free = true;
+        }else{
+            this.free = false;
+        }
+    }
+
+    private void updateOffline() {
+        if (this.location == null || this.location.isBlank()) {
+            this.offline = true;
+        }else{
+            this.offline = false;
+        }
+    }
 }
