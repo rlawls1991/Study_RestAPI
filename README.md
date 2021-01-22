@@ -22,3 +22,5 @@
 * 입력값 이외에 에러 발생
 * Bad Request 처리하기
 
+## step8
+* Bad Request 응답 본문 만들기
