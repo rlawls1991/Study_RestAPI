@@ -1,4 +1,4 @@
-package study.evnets;
+package study.controller;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.hateoas.MediaTypes;
@@ -8,6 +8,10 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import study.domain.Event;
+import study.domain.EventDto;
+import study.domain.EventRepository;
+import study.domain.EventValidator;
 
 import javax.validation.Valid;
 import java.net.URI;
@@ -42,8 +46,8 @@ public class EventController {
             return ResponseEntity.badRequest().build();
             //return ResponseEntity.badRequest().body(errors); // 담을 수 없음
         }
-
         Event event = modelMapper.map(eventDto, Event.class);
+        event.update();
         Event newEvent = this.eventRepository.save(event);
         URI createUri = linkTo(EventController.class).slash(newEvent.getId()).toUri();
         return ResponseEntity.created(createUri).body(event);
