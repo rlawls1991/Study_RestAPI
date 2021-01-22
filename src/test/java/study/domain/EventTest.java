@@ -2,15 +2,14 @@ package study.domain;
 
 
 import org.junit.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
-import java.time.LocalDateTime;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
-
 public class EventTest {
-
-
     @Test
     public void builder() {
         Event event = Event.builder()
@@ -36,30 +35,45 @@ public class EventTest {
         assertThat(event.getDescription()).isEqualTo(description);
     }
 
-    @Test
-    public void updateFree() {
+    @ParameterizedTest(name = "{index} => basePrice={0}, maxPrice={1}, isFree={2}")
+    @CsvSource({
+            "0, 0, true",
+            "100, 0, falae",
+            "0, 1000, falae"
+    })
+    public void updateFree(int basePrice, int maxPrice, boolean isFree){
         // Given
         Event event = Event.builder()
-                .basePrice(0)
-                .maxPrice(0)
+                .basePrice(basePrice)
+                .maxPrice(maxPrice)
                 .build();
-
-        // When
+        //When
         event.update();
-
         // Then
-        assertThat(event.isFree()).isTrue();
+        assertThat(event.isFree()).isEqualTo(isFree);
     }
 
-    @Test
-    public void updateOffline() {
+    // Junit 5 기준
+    @ParameterizedTest(name = "{index} => location={0},  isOffline={1}")
+    @MethodSource("updateOfflineParam")
+    public void updateOffline(String location, boolean isOffline){
+        System.out.println("테스트요 : " + location + " / " + isOffline);
+        // Given
         Event event = Event.builder()
-                .id(100)
-                .basePrice(0)
-                .maxPrice(0)
-                .limitOfEnrollment(200)
+                .location(location)
                 .build();
+        //When
         event.update();
-        assertThat(event.isOffline()).isTrue();
+        // Then
+        assertThat(event.isOffline()).isEqualTo(isOffline);
+    }
+
+    // static 있어야 동작
+    private static Object[] updateOfflineParam() {
+        return new Object[]{
+                new Object[]{null, true},
+                new Object[]{"", true},
+                new Object[]{"경기도 안양시 만안구", false}
+        };
     }
 }
