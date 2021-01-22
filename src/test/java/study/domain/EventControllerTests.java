@@ -41,8 +41,8 @@ public class EventControllerTests {
                 .closeEnrollmentDateTime(LocalDateTime.of(2021, 01, 21, 18, 47))
                 .beginEventDateTime(LocalDateTime.of(2021, 01, 22, 18, 47))
                 .endEventDateTime(LocalDateTime.of(2021, 01, 23, 18, 47))
-                .basePrice(0)
-                .maxPrice(0)
+                .basePrice(100)
+                .maxPrice(200)
                 .limitOfEnrollment(200)
                 .location("경기도 안양시 범계")
                 .build();
@@ -56,8 +56,8 @@ public class EventControllerTests {
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
                 .andExpect(header().string(HttpHeaders.CONTENT_TYPE, MediaTypes.HAL_JSON_VALUE))
-                .andExpect(jsonPath("free").value(true))
-                .andExpect(jsonPath("offline").value(false))
+                .andExpect(jsonPath("free").value(false))
+                .andExpect(jsonPath("offline").value(true))
                 .andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT)))
         ;
     }
