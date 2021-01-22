@@ -1,4 +1,4 @@
-package study.evnets;
+package study.domain;
 
 import lombok.*;
 
