@@ -24,3 +24,6 @@
 
 ## step8
 * Bad Request 응답 본문 만들기
+
+## step9
+* 비즈니스 로직 적용
