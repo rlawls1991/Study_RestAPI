@@ -52,12 +52,12 @@ public class EventController {
 
         // hateoas 사용(링크추가)
         WebMvcLinkBuilder selfLinkBuilder = linkTo(EventController.class).slash(newEvent.getId());
-        URI createUri = selfLinkBuilder.toUri();
+        URI createdUri = selfLinkBuilder.toUri();
         EventResource eventResource = new EventResource(event);
         eventResource.add(linkTo(EventController.class).withRel("query-events"));
         eventResource.add(selfLinkBuilder.withRel("update-event"));
         log.info("eventResource =:> " , eventResource);
-        return ResponseEntity.created(createUri).body(eventResource);
+        return ResponseEntity.created(createdUri).body(eventResource);
     }
 
 }
