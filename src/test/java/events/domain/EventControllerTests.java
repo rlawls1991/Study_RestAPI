@@ -1,4 +1,4 @@
-package study.domain;
+package events.domain;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.hamcrest.Matchers;
@@ -59,6 +59,9 @@ public class EventControllerTests {
                 .andExpect(jsonPath("free").value(true))
                 .andExpect(jsonPath("offline").value(false))
                 .andExpect(jsonPath("eventStatus").value(Matchers.not(EventStatus.DRAFT)))
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.query-events").exists())
+                .andExpect(jsonPath("_links.update-event").exists())
         ;
     }
 

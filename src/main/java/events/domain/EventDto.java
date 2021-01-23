@@ -1,4 +1,4 @@
-package study.domain;
+package events.domain;
 
 import lombok.*;
 
