@@ -1,19 +1,19 @@
 package events.domain;
 
 
-import com.fasterxml.jackson.annotation.JsonUnwrapped;
-import org.springframework.hateoas.RepresentationModel;
+import events.controller.EventController;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.Link;
 
-public class EventResource extends RepresentationModel {
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 
-    @JsonUnwrapped
-    private Event event;
+public class EventResource extends EntityModel<Event> {
 
-    public EventResource(Event event) {
-        this.event = event;
-    }
-
-    public Event getEvent() {
-        return event;
+    /*
+     * self link는 resource마다 설정해줘야 하므로 여기에 공통으로 추가한다.
+     */
+    public EventResource(Event event, Link... links) {
+        super(event,  links);
+        add(linkTo(EventController.class).slash(event.getId()).withSelfRel());
     }
 }
