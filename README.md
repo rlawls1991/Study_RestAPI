@@ -34,6 +34,8 @@
 ## step11
 * 스프링 HATEOAS 적용
 
-# step12 
+## step12 
 * 스프링 REST Docs 적용 및 사용
 
+## step13
+* 스프링 REST Docs: 문서 빌드
