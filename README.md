@@ -33,3 +33,7 @@
 
 ## step11
 * 스프링 HATEOAS 적용
+
+# step12 
+* 스프링 REST Docs 적용 및 사용
+
