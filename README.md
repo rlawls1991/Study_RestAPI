@@ -1,4 +1,4 @@
-# Rest API 개발 - Event 생성 API 구현
+# Rest API 개발
 
 ## step1
 * 프로젝트 생성
