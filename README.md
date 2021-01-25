@@ -39,3 +39,6 @@
 
 ## step13
 * 스프링 REST Docs: 문서 빌드
+
+## step14
+* API 인덱스 개발
