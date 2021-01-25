@@ -1,4 +1,4 @@
-package events;
+package study.events;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;

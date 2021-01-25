@@ -1,7 +1,7 @@
-package events.domain;
+package study.events.domain;
 
 
-import events.controller.EventController;
+import study.events.controller.EventController;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;
 

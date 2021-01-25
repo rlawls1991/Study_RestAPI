@@ -1,4 +1,4 @@
-package events.domain;
+package study.events.domain;
 
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;

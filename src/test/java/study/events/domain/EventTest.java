@@ -1,4 +1,4 @@
-package events.domain;
+package study.events.domain;
 
 
 import org.junit.Test;
