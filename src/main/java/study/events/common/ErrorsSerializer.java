@@ -1,4 +1,4 @@
-package events.domain;
+package study.events.common;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;
@@ -12,9 +12,11 @@ import java.io.IOException;
 public class ErrorsSerializer extends JsonSerializer<Errors> {
     @Override
     public void serialize(Errors errors, JsonGenerator gen, SerializerProvider serializers) throws IOException {
+        gen.writeFieldName("errors");
         gen.writeStartArray();
         saveFieldErrors(errors, gen);
         saveGlobalErrors(errors, gen);
+        gen.writeEndArray();
     }
 
     private void saveGlobalErrors(Errors errors, JsonGenerator gen) {
@@ -39,7 +41,6 @@ public class ErrorsSerializer extends JsonSerializer<Errors> {
                 gen.writeStringField("objectName", e.getObjectName());
                 gen.writeStringField("code", e.getCode());
                 gen.writeStringField("defaultMessage", e.getDefaultMessage());
-
 
                 Object rejectedValue = e.getRejectedValue();
                 if (rejectedValue != null) {
