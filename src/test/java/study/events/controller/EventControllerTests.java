@@ -1,10 +1,6 @@
 package study.events.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import study.events.common.RestDocsConfiguration;
-import study.events.domain.Event;
-import study.events.domain.EventDto;
-import study.events.domain.EventStatus;
 import org.hamcrest.Matchers;
 import org.junit.Test;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +15,10 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import study.events.common.RestDocsConfiguration;
+import study.events.domain.Event;
+import study.events.domain.EventDto;
+import study.events.domain.EventStatus;
 
 import java.time.LocalDateTime;
 
@@ -47,7 +47,7 @@ public class EventControllerTests {
     @Test
     @DisplayName("정상적으로 이벤트를 생성하는 테스트")
     public void createEvent() throws Exception {
-        EventDto event = EventDto.builder()
+        EventDto eventDto = EventDto.builder()
                 .name("Spring")
                 .description("Rest API Development with Spring")
                 .beginEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
@@ -63,7 +63,7 @@ public class EventControllerTests {
         mockMvc.perform(post("/api/events")
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaTypes.HAL_JSON)
-                    .content(this.objectMapper.writeValueAsString(event)))
+                    .content(this.objectMapper.writeValueAsString(eventDto)))
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
@@ -146,7 +146,7 @@ public class EventControllerTests {
                 .basePrice(100)
                 .maxPrice(200)
                 .limitOfEnrollment(100)
-                .location("강남역 D2 스타텁 팩토리")
+                .location("경기도 안양시 범계")
                 .free(true)
                 .offline(false)
                 .eventStatus(EventStatus.PUBLISHED)
