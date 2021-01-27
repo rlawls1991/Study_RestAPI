@@ -15,6 +15,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.ResultActions;
 import study.events.common.RestDocsConfiguration;
 import study.events.domain.Event;
 import study.events.domain.EventDto;
@@ -70,7 +71,7 @@ public class EventControllerTests {
                     .contentType(MediaType.APPLICATION_JSON)
                     .accept(MediaTypes.HAL_JSON)
                     .content(this.objectMapper.writeValueAsString(eventDto)))
-                .andDo(print())
+                    .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("id").exists())
                 .andExpect(header().exists(HttpHeaders.LOCATION))
@@ -196,9 +197,9 @@ public class EventControllerTests {
                 .build();
 
         this.mockMvc.perform(post("/api/events")
-                    .contentType(MediaType.APPLICATION_JSON)
-                    .content(objectMapper.writeValueAsString(eventDto)))
-                    .andDo(print())
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(objectMapper.writeValueAsString(eventDto)))
+                .andDo(print())
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("errors[0].objectName").exists())
                 .andExpect(jsonPath("errors[0].defaultMessage").exists())
@@ -219,12 +220,14 @@ public class EventControllerTests {
         IntStream.range(0, 30).forEach(this::generateEvent);
 
         // When
-        this.mockMvc.perform(get("/api/events")
+        ResultActions perform = this.mockMvc.perform(get("/api/events")
                 .param("page", "1")
                 .param("size", "10")
                 .param("sort", "name,DESC"))
-                .andDo(print())
-                .andExpect(status().isOk())
+                .andDo(print());
+
+        // Then
+        perform.andExpect(status().isOk())
                 .andExpect(jsonPath("page").exists())
                 .andExpect(jsonPath("_embedded.eventList[0]._links.self").exists())
                 .andExpect(jsonPath("_links.self").exists())
@@ -233,13 +236,51 @@ public class EventControllerTests {
         ;
     }
 
-    private void generateEvent(int index){
+    @Test
+    @DisplayName("기존의 이벤트를 하나 조회하기")
+    public void getEvent() throws Exception {
+        // Given
+        Event event = this.generateEvent(100);
+
+        // When & Then
+        this.mockMvc.perform(get("/api/events/{id}", event.getId()))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("name").exists())
+                .andExpect(jsonPath("id").exists())
+                .andExpect(jsonPath("_links.self").exists())
+                .andExpect(jsonPath("_links.profile").exists())
+                .andDo(document("get-an-event"))
+        ;
+    }
+
+    @Test
+    @DisplayName("없는 이벤트를 조회했을 때 404 응답")
+    public void getEvnet404() throws Exception {
+        // When & Then
+        this.mockMvc.perform(get("/api/events{id}", "1004"))
+                .andExpect(status().isNotFound());
+    }
+
+    private Event generateEvent(int index) {
         // Given
         Event event = Event.builder()
                 .name("event : " + index)
-                .description("test event")
+                .description("Rest API Development with Spring")
+                .beginEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
+                .closeEnrollmentDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
+                .beginEventDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
+                .endEventDateTime(LocalDateTime.of(2021, 01, 20, 18, 47))
+                .basePrice(100)
+                .maxPrice(200)
+                .limitOfEnrollment(100)
+                .location("경기도 안양시 범계")
+                .free(false)
+                .offline(true)
+                .eventStatus(EventStatus.DRAFT)
                 .build();
 
-        this.eventRepository.save(event);
+        return this.eventRepository.save(event);
     }
+
+
 }
