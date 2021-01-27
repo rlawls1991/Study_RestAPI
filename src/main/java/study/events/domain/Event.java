@@ -1,6 +1,7 @@
 package study.events.domain;
 
 import lombok.*;
+import study.accounts.domain.Account;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -26,7 +27,8 @@ public class Event {
     private boolean free;
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus = EventStatus.DRAFT;
-
+    @ManyToOne
+    private Account manager;
 
     public void update() {
         updateFree();
