@@ -60,8 +60,7 @@ public class EventController{
         return ResponseEntity.created(createdUri).body(eventResource);
     }
 
-    private ResponseEntity badRequest(Errors errors) {
-        return ResponseEntity.badRequest().body(ErrorsResource.modelOf(errors));
+    private ResponseEntity<?> badRequest(Errors errors) {
+        return ResponseEntity.badRequest().body(new ErrorsResource(errors));
     }
-
 }
