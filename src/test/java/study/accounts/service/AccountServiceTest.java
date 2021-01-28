@@ -1,6 +1,7 @@
 package study.accounts.service;
 
 
+import org.hamcrest.Matchers;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -25,6 +26,9 @@ import static org.assertj.core.api.Assertions.fail;
 @SpringBootTest
 @ActiveProfiles("test")
 public class AccountServiceTest {
+
+    @Rule
+    public ExpectedException expectedException = ExpectedException.none();
 
     @Autowired
     AccountService accountService;
@@ -53,17 +57,16 @@ public class AccountServiceTest {
         assertThat(userDetails.getPassword()).isEqualTo(password);
     }
 
-    @Test(expected = UsernameNotFoundException.class)
+    
+    @Test
     public void findByUserNameFail() {
+        // Expected
         String userName = "random@test.com";
+        expectedException.expect(UsernameNotFoundException.class);
+        expectedException.expectMessage(Matchers.containsString(userName));
 
-        try {
-            accountService.loadUserByUsername(userName);
-            fail("supposed to be failed");
-        } catch (UsernameNotFoundException e) {
-            assertThat(e.getMessage()).containsSequence(userName);
-        }
-
+        // When
+        accountService.loadUserByUsername(userName);
     }
 
 }
