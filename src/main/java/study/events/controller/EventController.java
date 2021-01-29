@@ -11,7 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
-import study.events.common.ErrorsResource;
+import study.common.ErrorsResource;
 import study.events.domain.*;
 
 import javax.validation.Valid;

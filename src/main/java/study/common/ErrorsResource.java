@@ -1,4 +1,4 @@
-package study.events.common;
+package study.common;
 
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.Link;

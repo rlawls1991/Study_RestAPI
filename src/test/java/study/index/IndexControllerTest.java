@@ -1,7 +1,7 @@
 package study.index;
 
 import org.junit.Test;
-import study.events.common.BaseControllerTest;
+import study.common.BaseControllerTest;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
