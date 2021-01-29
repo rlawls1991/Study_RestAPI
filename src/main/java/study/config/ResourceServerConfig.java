@@ -21,14 +21,14 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(HttpSecurity http) throws Exception {
         http
                 .anonymous()
-                .and()
+                    .and()
                 .authorizeRequests()
-                .antMatchers("/h2-console/**").permitAll()
+                    .antMatchers("/h2-console/**").permitAll()
                 .mvcMatchers(HttpMethod.GET, "/api/**")
-                .permitAll()
+                    .permitAll()
                 .anyRequest() // GET을 제외한 그밖의 요청은 인증 필요
                 .authenticated()
-                .and()
+                    .and()
                 .exceptionHandling()
                 .accessDeniedHandler(new OAuth2AccessDeniedHandler());
     }
