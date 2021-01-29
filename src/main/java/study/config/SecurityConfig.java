@@ -55,9 +55,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
 
     /**
-     * 스프링 시큐리티 폼 인증 설정 부분
+     * 스프링 시큐리티 폼 인증 설정 부분(리소스 서버에서 설정 가능)
      */
 
+    /*
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http
@@ -70,5 +71,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 //.mvcMatchers(HttpMethod.GET, "/api/**").anonymous() //인증 안걸림
                 .anyRequest().authenticated();
     }
-
+    */
 }
