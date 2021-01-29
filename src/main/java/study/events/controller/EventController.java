@@ -41,7 +41,7 @@ public class EventController {
     }
 
     @PostMapping
-    public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto, \
+    public ResponseEntity createEvent(@RequestBody @Valid EventDto eventDto,
                                       Errors errors,
                                       @CurrentUser Account currentUser) {
         if (errors.hasErrors()) {
