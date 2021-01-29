@@ -92,11 +92,7 @@ public class EventController {
 
         Event event = optionalEvent.get();
         EventResource eventResource = new EventResource(event);
-        eventResource.add(Link.of("/docs/index.html#resources-events-list").withRel("profile"));
-
-        if(event.getManager().equals(currentUser)){
-            eventResource.add(linkTo(EventController.class).slash(event.getId()).withRel("update-event"));
-        }
+        eventResource.add(Link.of("/docs/index.html#resources-events-get").withRel("profile"));
 
         return ResponseEntity.ok(eventResource);
     }
