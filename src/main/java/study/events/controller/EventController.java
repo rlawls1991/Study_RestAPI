@@ -8,9 +8,11 @@ import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.hateoas.Link;
 import org.springframework.hateoas.MediaTypes;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
+import study.accounts.domain.Account;
 import study.common.ErrorsResource;
 import study.events.domain.*;
 
@@ -63,11 +65,17 @@ public class EventController {
     }
 
     @GetMapping
-    public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler) {
+    public ResponseEntity queryEvents(Pageable pageable, PagedResourcesAssembler<Event> assembler,
+                                      @AuthenticationPrincipal(expression = "account ") Account account) {
         Page<Event> page = this.eventRepository.findAll(pageable);
         // PagedModel<EntityModel<Event>> pageResource = assembler.toModel(page, e -> new EventResource(e));
         var pageResource = assembler.toModel(page, e -> new EventResource(e));
         pageResource.add(Link.of("/docs/index.html#resources-events-list").withRel("profile"));
+
+        if(currentUser != null){
+            pageResource.add(linkTo(EventController.class).withRel("create-event"));
+        }
+
         return ResponseEntity.ok(pageResource);
     }
 
