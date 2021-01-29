@@ -8,6 +8,7 @@ import study.accounts.domain.Account;
 import study.accounts.domain.AccountRole;
 import study.accounts.service.AccountService;
 import study.common.BaseControllerTest;
+import study.config.AppProperties;
 
 import java.util.Set;
 
@@ -22,11 +23,16 @@ public class AutoServerConfigTest extends BaseControllerTest {
     @Autowired
     AccountService accountService;
 
+
+    @Autowired
+    AppProperties appProperties;
+
+
     @Test
     @DisplayName("인증 토큰을 발급 받는 테스트")
     public void getAuthToken() throws Exception {
-        String userName = "JinSeok";
-        String password = "jinSeok";
+        String userName = appProperties.getUserUserName();
+        String password = appProperties.getUserPassword();
 
         Account jinSeok = Account.builder()
                 .email(userName)
@@ -35,13 +41,10 @@ public class AutoServerConfigTest extends BaseControllerTest {
                 .build();
         this.accountService.saveAccount(jinSeok);
 
-        String clientId = "myApp";
-        String clientSecret = "pass";
-
         this.mockMvc.perform(post("/oauth/token")
-                .with(httpBasic(clientId, clientSecret))
-                .param("username", userName)
-                .param("password", password)
+                .with(httpBasic(appProperties.getClientId(), appProperties.getClientSecret()))
+                .param("username", appProperties.getUserUserName())
+                .param("password", appProperties.getUserPassword())
                 .param("grant_type", "password"))
                 .andDo(print())
                 .andExpect(status().isOk())
